@@ -139,15 +139,35 @@ function pageActionItems(hook, vm) {
       return { ...defaultButton, ...(vm.config?.pageActionItems?.button ?? {}) };
    }
 
-   // Get current Docsify page URL
-   function getCurrentPageUrl() {
-      const { origin, pathname } = window.location;
-      let route = window.location.hash.replace(/^#\//, '').replace(/\.md$/, '') || 'README.md';
-      if (!route.endsWith('.md')) route += '.md';
+   // Resolve the base URL that Markdown files are served from, honouring a
+   // configured basePath (which may be relative or an absolute URL).
+   function getDocsBase() {
+      const { origin } = window.location;
+      const basePath = vm.config?.basePath;
+      if (!basePath) return origin + '/';
+      // new URL() keeps absolute basePaths (e.g. a CDN) and resolves relative ones
+      return new URL(basePath, origin + '/').href.replace(/\/?$/, '/');
+   }
 
-      const cleanPathname = pathname.replace(/\/$/, '');
-      const cleanRoute = route.replace(/^\//, '');
-      return origin + cleanPathname + '/' + cleanRoute;
+   // Get current Docsify page URL (the raw Markdown file for the current page).
+   // We trust the file Docsify itself resolved for this route (vm.route.file),
+   // which already accounts for routerMode (hash/history), basePath, aliases and
+   // whether the docs use flat files or directory/README.md indexes.
+   function getCurrentPageUrl() {
+      const { origin } = window.location;
+
+      if (vm.route?.file) {
+         return new URL(String(vm.route.file).replace(/^\//, ''), origin + '/').href;
+      }
+
+      // Fallback for older Docsify versions that don't expose vm.route.file:
+      // compute a flat file path from the logical route.
+      const route = (vm.route?.path ?? window.location.hash.replace(/^#/, ''))
+         .replace(/^\//, '')
+         .replace(/\/$/, '');
+      const file = route === '' ? 'README.md' : route.endsWith('.md') ? route : route + '.md';
+
+      return new URL(file, getDocsBase()).href;
    }
 
    // Get localized text utility function (inpsired by the implementation in the docsify-pagination plugin)
