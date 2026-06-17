@@ -11,6 +11,7 @@
  *   - View Markdown
  *   - Open Claude with page context
  *   - Open Perplexity with page context
+ *   - Open Mistral with page context
  *
  * Usage:
  *   window.$docsify = {
@@ -36,6 +37,8 @@ function pageActionItems(hook, vm) {
          '<svg fill="currentColor" fill-rule="evenodd" height="18" width="18" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title><path d="M13.827 3.52h3.603L24 20h-3.603l-6.57-16.48zm-7.258 0h3.767L16.906 20h-3.674l-1.343-3.461H5.017l-1.344 3.46H0L6.57 3.522zm4.132 9.959L8.453 7.687 6.205 13.48H10.7z"></path></svg>',
       perplexity:
          '<svg width="18" height="18" viewBox="0 0 34 38" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.12114 0.0400391L15.919 9.98864V9.98636V0.062995H18.0209V10.0332L28.8671 0.0400391V11.3829H33.3202V27.744H28.8808V37.8442L18.0209 28.303V37.9538H15.919V28.4604L5.13338 37.96V27.744H0.680176V11.3829H5.12114V0.0400391ZM14.3344 13.4592H2.78208V25.6677H5.13074V21.8167L14.3344 13.4592ZM7.23518 22.7379V33.3271L15.919 25.6786V14.8506L7.23518 22.7379ZM18.0814 25.5775V14.8404L26.7677 22.7282V27.744H26.7789V33.219L18.0814 25.5775ZM28.8808 25.6677H31.2183V13.4592H19.752L28.8808 21.7302V25.6677ZM26.7652 11.3829V4.81584L19.6374 11.3829H26.7652ZM14.3507 11.3829H7.22306V4.81584L14.3507 11.3829Z" fill="currentColor"></path></svg>',
+      mistral:
+         '<svg fill="currentColor" height="18" width="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Mistral AI</title><path d="M3.43 3.43h3.42v3.43H3.43zM17.14 3.43h3.43v3.43h-3.43zM3.43 6.86h6.86v3.42H3.43zM13.71 6.86h6.86v3.42h-6.86zM3.43 10.28h17.14v3.43H3.43zM3.43 13.71h3.42v3.43H3.43zM10.28 13.71h3.43v3.43h-3.43zM17.14 13.71h3.43v3.43h-3.43zM3.43 17.14h3.42v3.42H3.43zM17.14 17.14h3.43v3.42h-3.43z"></path></svg>',
    };
 
    // Default menu items
@@ -68,6 +71,13 @@ function pageActionItems(hook, vm) {
          action: 'llm',
          llm: 'perplexity',
       },
+      {
+         icon: svgs.mistral,
+         label: 'Open in Mistral <span style="margin-left:0.25rem;font-size:0.85em;">↗</span>',
+         desc: 'Ask questions about this page',
+         action: 'llm',
+         llm: 'mistral',
+      },
    ];
 
    const defaultButton = {
@@ -89,6 +99,10 @@ function pageActionItems(hook, vm) {
          `https://www.perplexity.ai/search/new?q=Read%20from%20${encodeURIComponent(
             url
          )}%20so%20I%20can+ask+questions+about+it.`,
+      mistral: (url) =>
+         `https://chat.mistral.ai/chat?q=Read%20from%20${encodeURIComponent(
+            url
+         )}%20so%20I%20can%20ask%20questions%20about%20it.`,
    };
 
    // Helper: handle onSuccess/onError for an item

@@ -8,6 +8,7 @@ By default, the plugin provides:
 -  View page markdown in a new tab
 -  Open Claude with the current page context
 -  Open Perplexity with the current page context
+-  Open Mistral with the current page context
 
 ![default-light-mode](/assets/page-actions-light-default.png)
 
@@ -66,7 +67,7 @@ window.$docsify = {
             label: 'Custom link',
             desc: 'Description goes here',
             action: 'custom', // or 'llm' | 'view' | 'copy'
-            llm: 'claude', // 'perplexity' | 'chatgpt' (if action is 'llm')
+            llm: 'claude', // 'perplexity' | 'chatgpt' | 'mistral' (if action is 'llm')
             onClick: ({ rawMarkdown, blobUrl, vm }) => {
                // Custom handler logic
             },
@@ -138,6 +139,13 @@ For context here's the default items that are included by default:
       desc: 'Ask questions about this page',
       action: 'llm',
       llm: 'perplexity',
+   },
+   {
+      icon: '<svg fill="currentColor" height="18" width="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Mistral AI</title><path d="M3.43 3.43h3.42v3.43H3.43zM17.14 3.43h3.43v3.43h-3.43zM3.43 6.86h6.86v3.42H3.43zM13.71 6.86h6.86v3.42h-6.86zM3.43 10.28h17.14v3.43H3.43zM3.43 13.71h3.42v3.43H3.43zM10.28 13.71h3.43v3.43h-3.43zM17.14 13.71h3.43v3.43h-3.43zM3.43 17.14h3.42v3.42H3.43zM17.14 17.14h3.43v3.42h-3.43z"></path></svg>',
+      label: 'Open in Mistral <span style="margin-left:0.25rem;font-size:0.85em;">↗</span>',
+      desc: 'Ask questions about this page',
+      action: 'llm',
+      llm: 'mistral',
    },
 ];
 ```
