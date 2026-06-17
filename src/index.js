@@ -87,9 +87,9 @@ function pageActionItems(hook, vm) {
 
    // LLM target URLs
    const llmUrls = {
-      chatgpt: (md) =>
+      chatgpt: (url) =>
          `https://chatgpt.com/?hints=search&prompt=Read+from+${encodeURIComponent(
-            md
+            url
          )}+so+I+can+ask+questions+about+it.`,
       claude: (url) =>
          `https://claude.ai/new?q=Read%20from%20${encodeURIComponent(
@@ -390,10 +390,7 @@ function pageActionItems(hook, vm) {
                   window.open(blobUrl, '_blank');
                   handleActionResult('onSuccess', item, context);
                } else if (item.action === 'llm') {
-                  let url =
-                     item.llm === 'chatgpt'
-                        ? llmUrls[item.llm]?.(rawMarkdown)
-                        : llmUrls[item.llm]?.(getCurrentPageUrl());
+                  let url = llmUrls[item.llm]?.(getCurrentPageUrl());
                   window.open(url, '_blank');
                   handleActionResult('onSuccess', item, context);
                } else if (typeof item.onClick === 'function') {
